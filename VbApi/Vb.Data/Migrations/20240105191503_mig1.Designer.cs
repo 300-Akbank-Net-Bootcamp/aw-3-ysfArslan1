@@ -12,8 +12,8 @@ using Vb.Data;
 namespace Vb.Data.Migrations
 {
     [DbContext(typeof(VbDbContext))]
-    [Migration("20231230161658_mig2")]
-    partial class mig2
+    [Migration("20240105191503_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace Vb.Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("CustomerNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("IBAN")
@@ -76,7 +76,7 @@ namespace Vb.Data.Migrations
                     b.HasIndex("AccountNumber")
                         .IsUnique();
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerNumber");
 
                     b.ToTable("Account", "dbo");
                 });
@@ -89,7 +89,7 @@ namespace Vb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
+                    b.Property<int>("AccountNumber")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
@@ -132,7 +132,7 @@ namespace Vb.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountNumber");
 
                     b.HasIndex("ReferenceNumber");
 
@@ -170,7 +170,7 @@ namespace Vb.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("CustomerNumber")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("InsertDate")
@@ -201,7 +201,7 @@ namespace Vb.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerNumber");
 
                     b.ToTable("Address", "dbo");
                 });
@@ -219,7 +219,7 @@ namespace Vb.Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("CustomerNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("Information")
@@ -251,7 +251,7 @@ namespace Vb.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerNumber");
 
                     b.HasIndex("Information", "ContactType")
                         .IsUnique();
@@ -321,7 +321,7 @@ namespace Vb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
+                    b.Property<int>("AccountNumber")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
@@ -374,7 +374,7 @@ namespace Vb.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountNumber");
 
                     b.HasIndex("ReferenceNumber");
 
@@ -385,7 +385,7 @@ namespace Vb.Data.Migrations
                 {
                     b.HasOne("Vb.Data.Entity.Customer", "Customer")
                         .WithMany("Accounts")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomerNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -396,7 +396,7 @@ namespace Vb.Data.Migrations
                 {
                     b.HasOne("Vb.Data.Entity.Account", "Account")
                         .WithMany("AccountTransactions")
-                        .HasForeignKey("AccountId")
+                        .HasForeignKey("AccountNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -407,7 +407,7 @@ namespace Vb.Data.Migrations
                 {
                     b.HasOne("Vb.Data.Entity.Customer", "Customer")
                         .WithMany("Addresses")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomerNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -418,7 +418,7 @@ namespace Vb.Data.Migrations
                 {
                     b.HasOne("Vb.Data.Entity.Customer", "Customer")
                         .WithMany("Contacts")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomerNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -429,7 +429,7 @@ namespace Vb.Data.Migrations
                 {
                     b.HasOne("Vb.Data.Entity.Account", "Account")
                         .WithMany("EftTransactions")
-                        .HasForeignKey("AccountId")
+                        .HasForeignKey("AccountNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

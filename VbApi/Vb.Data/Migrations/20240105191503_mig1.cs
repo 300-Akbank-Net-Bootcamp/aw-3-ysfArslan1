@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Vb.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,12 +19,10 @@ namespace Vb.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerNumber = table.Column<int>(type: "int", nullable: false),
                     IdentityNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CustomerNumber = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastActivityDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InsertUserId = table.Column<int>(type: "int", nullable: false),
@@ -35,7 +33,7 @@ namespace Vb.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.PrimaryKey("PK_Customer", x => x.CustomerNumber);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,10 +41,8 @@ namespace Vb.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     AccountNumber = table.Column<int>(type: "int", nullable: false),
+                    CustomerNumber = table.Column<int>(type: "int", nullable: false),
                     IBAN = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
                     CurrencyType = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
@@ -60,13 +56,13 @@ namespace Vb.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.Id);
+                    table.PrimaryKey("PK_Account", x => x.AccountNumber);
                     table.ForeignKey(
-                        name: "FK_Account_Customer_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Account_Customer_CustomerNumber",
+                        column: x => x.CustomerNumber,
                         principalSchema: "dbo",
                         principalTable: "Customer",
-                        principalColumn: "Id",
+                        principalColumn: "CustomerNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -77,7 +73,7 @@ namespace Vb.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerNumber = table.Column<int>(type: "int", nullable: false),
                     Address1 = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Address2 = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -95,11 +91,11 @@ namespace Vb.Data.Migrations
                 {
                     table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_Customer_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Address_Customer_CustomerNumber",
+                        column: x => x.CustomerNumber,
                         principalSchema: "dbo",
                         principalTable: "Customer",
-                        principalColumn: "Id",
+                        principalColumn: "CustomerNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -110,7 +106,7 @@ namespace Vb.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerNumber = table.Column<int>(type: "int", nullable: false),
                     ContactType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Information = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
@@ -124,11 +120,11 @@ namespace Vb.Data.Migrations
                 {
                     table.PrimaryKey("PK_Contact", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contact_Customer_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Contact_Customer_CustomerNumber",
+                        column: x => x.CustomerNumber,
                         principalSchema: "dbo",
                         principalTable: "Customer",
-                        principalColumn: "Id",
+                        principalColumn: "CustomerNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -139,7 +135,7 @@ namespace Vb.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    AccountNumber = table.Column<int>(type: "int", nullable: false),
                     ReferenceNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
@@ -155,11 +151,11 @@ namespace Vb.Data.Migrations
                 {
                     table.PrimaryKey("PK_AccountTransaction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccountTransaction_Account_AccountId",
-                        column: x => x.AccountId,
+                        name: "FK_AccountTransaction_Account_AccountNumber",
+                        column: x => x.AccountNumber,
                         principalSchema: "dbo",
                         principalTable: "Account",
-                        principalColumn: "Id",
+                        principalColumn: "AccountNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -170,7 +166,7 @@ namespace Vb.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    AccountNumber = table.Column<int>(type: "int", nullable: false),
                     ReferenceNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
@@ -188,11 +184,11 @@ namespace Vb.Data.Migrations
                 {
                     table.PrimaryKey("PK_EftTransaction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EftTransaction_Account_AccountId",
-                        column: x => x.AccountId,
+                        name: "FK_EftTransaction_Account_AccountNumber",
+                        column: x => x.AccountNumber,
                         principalSchema: "dbo",
                         principalTable: "Account",
-                        principalColumn: "Id",
+                        principalColumn: "AccountNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -204,16 +200,16 @@ namespace Vb.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_CustomerId",
+                name: "IX_Account_CustomerNumber",
                 schema: "dbo",
                 table: "Account",
-                column: "CustomerId");
+                column: "CustomerNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountTransaction_AccountId",
+                name: "IX_AccountTransaction_AccountNumber",
                 schema: "dbo",
                 table: "AccountTransaction",
-                column: "AccountId");
+                column: "AccountNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountTransaction_ReferenceNumber",
@@ -222,16 +218,16 @@ namespace Vb.Data.Migrations
                 column: "ReferenceNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_CustomerId",
+                name: "IX_Address_CustomerNumber",
                 schema: "dbo",
                 table: "Address",
-                column: "CustomerId");
+                column: "CustomerNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contact_CustomerId",
+                name: "IX_Contact_CustomerNumber",
                 schema: "dbo",
                 table: "Contact",
-                column: "CustomerId");
+                column: "CustomerNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contact_Information_ContactType",
@@ -255,10 +251,10 @@ namespace Vb.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EftTransaction_AccountId",
+                name: "IX_EftTransaction_AccountNumber",
                 schema: "dbo",
                 table: "EftTransaction",
-                column: "AccountId");
+                column: "AccountNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EftTransaction_ReferenceNumber",
