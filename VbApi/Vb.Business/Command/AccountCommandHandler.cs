@@ -28,10 +28,12 @@ public class AccountCommandHandler :
         this.mapper = mapper;
     }
 
+    // Account nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // Foreign Key kontrolu yapýlýr
             var checkIdentity = await dbContext.Customers.Where(x => x.CustomerNumber == request.Model.CustomerNumber)
             .FirstOrDefaultAsync(cancellationToken);
             
@@ -48,8 +50,10 @@ public class AccountCommandHandler :
             entity.AccountNumber = await generateAccountNumber();
             entity.IBAN = generateIBAN(); // bun bk
 
+            // database iþlemleri yapýlýyor
             var entityResult = await dbContext.Accounts.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Account, AccountResponse>(entity);
 
             var response = new
@@ -75,11 +79,13 @@ public class AccountCommandHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Account nesnesini düzenlemek için kullanýlýr
     public async Task<IActionResult> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
     {
         
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.Accounts.Where(x => x.AccountNumber == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -97,8 +103,10 @@ public class AccountCommandHandler :
             fromdb.UpdateUserId = request.Model.UpdateUserId;
             fromdb.UpdateDate = DateTime.Now;
 
+            // database iþlemleri yapýlýyor
             dbContext.Accounts.Update(fromdb);//yeni
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Account, AccountResponse>(fromdb);
 
             var response = new
@@ -125,10 +133,12 @@ public class AccountCommandHandler :
         }
     }
 
+    // Account nesnesini silmek için kullanýlýr
     public async Task<IActionResult> Handle(DeleteAccountCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.Accounts.Where(x => x.AccountNumber == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -145,6 +155,7 @@ public class AccountCommandHandler :
 
             fromdb.IsActive = false;
 
+            // database iþlemleri yapýlýyor
             dbContext.Accounts.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
 

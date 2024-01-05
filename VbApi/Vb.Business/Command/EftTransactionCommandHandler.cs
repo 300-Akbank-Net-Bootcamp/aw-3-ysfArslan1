@@ -25,10 +25,12 @@ public class EftTransactionCommandHandler :
         this.mapper = mapper;
     }
 
+    // EftTransaction nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(CreateEftTransactionCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // Foreign Key kontrolu yapýlýr
             var checkIdentity = await dbContext.Accounts.Where(x => x.AccountNumber == request.Model.AccountNumber)
             .FirstOrDefaultAsync(cancellationToken);
             if (checkIdentity == null)
@@ -42,10 +44,12 @@ public class EftTransactionCommandHandler :
                 return new ObjectResult(responseNF) { StatusCode = 404 }; // 404 Not Found durumu            }
             }
             var entity = mapper.Map<CreateEftTransactionRequest, EftTransaction>(request.Model);
-            
 
+
+            // database iþlemleri yapýlýyor
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<EftTransaction, EftTransactionResponse>(entity);
 
             var response = new
@@ -72,10 +76,12 @@ public class EftTransactionCommandHandler :
         }
     }
 
+    // EftTransaction nesnesini düzenlemek için kullanýlýr
     public async Task<IActionResult> Handle(UpdateEftTransactionCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.EftTransactions.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -94,8 +100,10 @@ public class EftTransactionCommandHandler :
             fromdb.UpdateUserId = request.Model.UpdateUserId;
             fromdb.UpdateDate = DateTime.Now;
 
+            // database iþlemleri yapýlýyor
             dbContext.EftTransactions.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<EftTransaction, EftTransactionResponse>(fromdb);
 
             var response = new
@@ -123,10 +131,12 @@ public class EftTransactionCommandHandler :
     }
 
 
+    // EftTransaction nesnesini silmek için kullanýlýr
     public async Task<IActionResult> Handle(DeleteEftTransactionCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.EftTransactions.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -143,8 +153,10 @@ public class EftTransactionCommandHandler :
 
             fromdb.IsActive = false;
 
+            // database iþlemleri yapýlýyor
             dbContext.EftTransactions.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<EftTransaction, EftTransactionResponse>(fromdb);
 
             var response = new

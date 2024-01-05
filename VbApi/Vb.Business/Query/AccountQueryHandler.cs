@@ -24,7 +24,8 @@ public class AccountQueryHandler :
         this.dbContext = dbContext;
         this.mapper = mapper;
     }
-    
+
+    // Account Tablosundaki nesnelerin tamamýný almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAllAccountQuery request,
         CancellationToken cancellationToken)
     {
@@ -69,6 +70,7 @@ public class AccountQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Account Tablosundaki id degeri gönderilen nesneyi almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAccountByIdQuery request,
         CancellationToken cancellationToken)
     {
@@ -114,6 +116,7 @@ public class AccountQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Account Tablosundaki istenilen degerleri gönderilen nesneyi almak için kullanýlýr
     public async Task<IActionResult> Handle(GetAccountByParameterQuery request,
         CancellationToken cancellationToken)
     {

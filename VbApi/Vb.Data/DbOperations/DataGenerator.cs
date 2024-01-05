@@ -8,7 +8,7 @@ namespace Vb.Data;
 
 public class DataGenerator
 {
-    //Database de data üretmek içinkullanılıyor // program.cs de çalıştırılıyor
+    //Database de data üretmek içinkullanılıyor
     public static void Initialize(IServiceProvider serviceProvider)
     {
         using (var content = new VbDbContext(serviceProvider.GetRequiredService<DbContextOptions<VbDbContext>>())) 

@@ -25,11 +25,12 @@ public class ContactCommandHandler :
         this.mapper = mapper;
     }
 
-
+    // Contact nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(CreateContactCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // Foreign Key kontrolu yapýlýr
             var checkIdentity = await dbContext.Customers.Where(x => x.CustomerNumber == request.Model.CustomerNumber)
             .FirstOrDefaultAsync(cancellationToken);
             if (checkIdentity == null)
@@ -43,9 +44,11 @@ public class ContactCommandHandler :
                 return new ObjectResult(responseNF) { StatusCode = 404 }; // 404 Not Found durumu            }
             }
             var entity = mapper.Map<CreateContactRequest, Contact>(request.Model);
-
+            // database iþlemleri yapýlýyor
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Contact, ContactResponse>(entity);
 
             var response = new
@@ -71,11 +74,12 @@ public class ContactCommandHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
-
+    // Contact nesnesini düzenlemek için kullanýlýr
     public async Task<IActionResult> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.Contacts.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -93,9 +97,10 @@ public class ContactCommandHandler :
             fromdb.IsDefault = request.Model.IsDefault;
             fromdb.UpdateUserId = request.Model.UpdateUserId;
             fromdb.UpdateDate = DateTime.Now;
-
+            // database iþlemleri yapýlýyor
             dbContext.Contacts.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Contact, ContactResponse>(fromdb);
 
             var response = new
@@ -122,11 +127,12 @@ public class ContactCommandHandler :
         }
     }
 
-
+    // Contact nesnesini silmek için kullanýlýr
     public async Task<IActionResult> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.Contacts.Where(x => x.Id== request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -142,9 +148,10 @@ public class ContactCommandHandler :
 
 
             fromdb.IsActive = false;
-
+            // database iþlemleri yapýlýyor
             dbContext.Contacts.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Contact, ContactResponse>(fromdb);
 
             var response = new

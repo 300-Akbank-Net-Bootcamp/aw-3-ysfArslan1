@@ -23,6 +23,7 @@ public class EftTransactionQueryHandler :
         this.mapper = mapper;
     }
 
+    // EftTransaction Tablosundaki nesnelerin tamamýný almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAllEftTransactionQuery request,
         CancellationToken cancellationToken)
     {
@@ -67,7 +68,8 @@ public class EftTransactionQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
- 
+
+    // EftTransaction Tablosundaki id degeri gönderilen nesneyi almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetEftTransactionByIdQuery request,
         CancellationToken cancellationToken)
     {
@@ -113,6 +115,7 @@ public class EftTransactionQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // EftTransaction Tablosundaki istenilen degerleri gönderilen nesneyi almak için kullanýlýr
     public async Task<IActionResult> Handle(GetEftTransactionByParameterQuery request,
         CancellationToken cancellationToken)
     {

@@ -22,6 +22,7 @@ public class AddressQueryHandler :
         this.dbContext = dbContext;
         this.mapper = mapper;
     }
+    // Address Tablosundaki nesnelerin tamamýný almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAllAddressQuery request,
         CancellationToken cancellationToken)
     {
@@ -67,6 +68,7 @@ public class AddressQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Address Tablosundaki id degeri gönderilen nesneyi almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAddressByIdQuery request,
         CancellationToken cancellationToken)
     {
@@ -113,6 +115,7 @@ public class AddressQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Address Tablosundaki istenilen degerleri gönderilen nesneyi almak için kullanýlýr
     public async Task<IActionResult> Handle(GetAddressByParameterQuery request,
         CancellationToken cancellationToken)
     {

@@ -19,6 +19,7 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new GetAllAccountQuery();
         var result = await mediator.Send(operation);
         return result;
@@ -27,6 +28,7 @@ public class AccountController : ControllerBase
     [HttpGet("{AccountNumber}")]
     public async Task<IActionResult> Get(int AccountNumber)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new GetAccountByIdQuery(AccountNumber);
         var result = await mediator.Send(operation);
         return result;
@@ -34,6 +36,7 @@ public class AccountController : ControllerBase
     [HttpGet("/GetAccountByParameterQuery")]
     public async Task<IActionResult> GetAccountByParameterQuery([FromQuery]int AccountNumber, string IBAN, string Name)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new GetAccountByParameterQuery(AccountNumber,IBAN,Name);
         var result = await mediator.Send(operation);
         return result;
@@ -42,6 +45,7 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CreateAccountRequest Account)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new CreateAccountCommand(Account);
         var result = await mediator.Send(operation);
         return result;
@@ -50,6 +54,7 @@ public class AccountController : ControllerBase
     [HttpPut("{AccountNumber}")]
     public async Task<IActionResult> Put(int AccountNumber, [FromBody] UpdateAccountRequest Account)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new UpdateAccountCommand(AccountNumber, Account);
         var result = await mediator.Send(operation);
         return result;
@@ -58,6 +63,7 @@ public class AccountController : ControllerBase
     [HttpDelete("{AccountNumber}")]
     public async Task<IActionResult> Delete(int AccountNumber)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new DeleteAccountCommand(AccountNumber);
         var result = await mediator.Send(operation);
         return result;

@@ -24,6 +24,7 @@ public class CustomerQueryHandler :
         this.mapper = mapper;
     }
 
+    // Customer Tablosundaki nesnelerin tamamýný almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAllCustomerQuery request,
         CancellationToken cancellationToken)
     {
@@ -69,6 +70,7 @@ public class CustomerQueryHandler :
         }
     }
 
+    // Customer Tablosundaki id degeri gönderilen nesneyi almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetCustomerByIdQuery request,
         CancellationToken cancellationToken)
     {
@@ -115,6 +117,7 @@ public class CustomerQueryHandler :
         }
     }
 
+    // Customer Tablosundaki istenilen degerleri gönderilen nesneyi almak için kullanýlýr
     public async Task<IActionResult> Handle(GetCustomerByParameterQuery request,
         CancellationToken cancellationToken)
     {

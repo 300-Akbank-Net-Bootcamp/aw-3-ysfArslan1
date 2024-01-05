@@ -26,10 +26,12 @@ public class AddressCommandHandler :
     }
 
 
+    // Address nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(CreateAddressCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // Foreign Key kontrolu yapýlýr
             var checkIdentity = await dbContext.Customers.Where(x => x.CustomerNumber == request.Model.CustomerNumber)
             .FirstOrDefaultAsync(cancellationToken);
             if (checkIdentity == null)
@@ -44,8 +46,10 @@ public class AddressCommandHandler :
             }
             var entity = mapper.Map<CreateAddressRequest, Address>(request.Model);
 
+            // database iþlemleri yapýlýyor
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Address, AddressResponse>(entity);
 
             var response = new
@@ -71,10 +75,12 @@ public class AddressCommandHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Address nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.Addresses.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -97,8 +103,10 @@ public class AddressCommandHandler :
             fromdb.UpdateUserId = request.Model.UpdateUserId;
             fromdb.UpdateDate = DateTime.Now;
 
+            // database iþlemleri yapýlýyor
             dbContext.Addresses.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Address, AddressResponse>(fromdb);
 
             var response = new
@@ -125,10 +133,12 @@ public class AddressCommandHandler :
         }
     }
 
+    // Address nesnesini düzenlemek için kullanýlýr
     public async Task<IActionResult> Handle(DeleteAddressCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.Addresses.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb != null)
@@ -143,6 +153,7 @@ public class AddressCommandHandler :
             }
 
 
+            // database iþlemleri yapýlýyor
             fromdb.IsActive = false;
 
             dbContext.Addresses.Update(fromdb);//yeni

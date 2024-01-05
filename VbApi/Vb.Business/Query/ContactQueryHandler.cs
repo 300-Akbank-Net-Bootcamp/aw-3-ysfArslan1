@@ -22,7 +22,7 @@ public class ContactQueryHandler :
         this.dbContext = dbContext;
         this.mapper = mapper;
     }
-
+    // Contact Tablosundaki nesnelerin tamamýný almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetAllContactQuery request,
         CancellationToken cancellationToken)
     {
@@ -67,6 +67,7 @@ public class ContactQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Contact Tablosundaki id degeri gönderilen nesneyi almak için kullanýlýr 
     public async Task<IActionResult> Handle(GetContactByIdQuery request,
         CancellationToken cancellationToken)
     {
@@ -112,6 +113,7 @@ public class ContactQueryHandler :
             return new ObjectResult(response) { StatusCode = 500 }; // 500 Internal Server Error durumu
         }
     }
+    // Contact Tablosundaki istenilen degerleri gönderilen nesneyi almak için kullanýlýr
     public async Task<IActionResult> Handle(GetContactByParameterQuery request,
         CancellationToken cancellationToken)
     {

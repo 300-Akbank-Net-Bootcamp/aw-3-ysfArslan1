@@ -26,10 +26,12 @@ public class CustomerCommandHandler :
     }
 
 
+    // Customer nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // kiþi verileri kontrolu yapýlýr
             var checkIdentity = await dbContext.Customers.Where(x => x.IdentityNumber == request.Model.IdentityNumber)
             .FirstOrDefaultAsync(cancellationToken);
             if (checkIdentity != null)
@@ -46,8 +48,10 @@ public class CustomerCommandHandler :
             entity.Accounts[0].IBAN = generateIBAN();
             entity.Accounts[0].AccountNumber = generateAccountNumber();
             entity.CustomerNumber = generateCustomerNumber();
+            // database iþlemleri yapýlýyor
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Customer, CustomerResponse>(entity);
 
             var response = new
@@ -74,6 +78,7 @@ public class CustomerCommandHandler :
         }
     }
 
+    // Customer nesnesini düzenlemek için kullanýlýr
     public async Task<IActionResult> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         try
@@ -96,8 +101,10 @@ public class CustomerCommandHandler :
             fromdb.UpdateUserId = request.Model.UpdateUserId;
             fromdb.UpdateDate = DateTime.Now;
 
+            // database iþlemleri yapýlýyor
             dbContext.Customers.Update(fromdb);//yeni
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Customer, CustomerResponse>(fromdb);
 
             var response = new
@@ -124,6 +131,7 @@ public class CustomerCommandHandler :
         }
     }
 
+    // Customer nesnesini silmek için kullanýlýr
     public async Task<IActionResult> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         try
@@ -144,8 +152,10 @@ public class CustomerCommandHandler :
 
             fromdb.IsActive = false;
 
+            // database iþlemleri yapýlýyor
             dbContext.Customers.Update(fromdb);//yeni
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<Customer, CustomerResponse>(fromdb);
 
             var response = new

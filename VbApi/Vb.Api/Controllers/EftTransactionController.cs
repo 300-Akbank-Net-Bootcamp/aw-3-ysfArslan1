@@ -16,49 +16,55 @@ public class EftTransactionController : ControllerBase
         this.mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet]// EftTransaction Tablosundaki nesnelerin tamamýný almak için kullanýlýr 
     public async Task<IActionResult> Get()
     {
-        var operation = new GetAllEftTransactionQuery();
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
+        var operation = new GetAllEftTransactionQuery(); 
         var result = await mediator.Send(operation);
         return result;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}")] // EftTransaction Tablosundaki id degeri gönderilen nesneyi almak için kullanýlýr 
     public async Task<IActionResult> Get(int id)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new GetEftTransactionByIdQuery(id);
         var result = await mediator.Send(operation);
         return result;
     }
-
+    // EftTransaction Tablosundaki istenilen degerleri gönderilen nesneyi almak için kullanýlýr
     [HttpGet("/GetEftTransactionByParameterQuery")]
     public async Task<IActionResult> GetEftTransactionByParameterQuery([FromQuery] int AccountNumber, string ReferenceNumber, string SenderIban)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new GetEftTransactionByParameterQuery(AccountNumber, ReferenceNumber, SenderIban);
         var result = await mediator.Send(operation);
         return result;
     }
 
-    [HttpPost]
+    [HttpPost]// EftTransaction nesnesini database eklemek için kullanýlýr
     public async Task<IActionResult> Post([FromBody] CreateEftTransactionRequest EftTransaction)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new CreateEftTransactionCommand(EftTransaction);
         var result = await mediator.Send(operation);
         return result;
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id}")]// EftTransaction Tablosundaki id degeri gönderilen nesneyi düzenlemek için kullanýlýr 
     public async Task<IActionResult> Put(int id, [FromBody] UpdateEftTransactionRequest EftTransaction)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new UpdateEftTransactionCommand(id, EftTransaction);
         var result = await mediator.Send(operation);
         return result;
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}")]// EftTransaction Tablosundaki id degeri gönderilen nesneyi silmek için kullanýlýr 
     public async Task<IActionResult> Delete(int id)
     {
+        // operasyon oluþturulur, oluþturulan operasyon mediater ile gönderilir.
         var operation = new DeleteEftTransactionCommand(id);
         var result = await mediator.Send(operation);
         return result;

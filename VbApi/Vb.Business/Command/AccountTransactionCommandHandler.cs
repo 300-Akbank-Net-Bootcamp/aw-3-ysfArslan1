@@ -25,10 +25,12 @@ public class AccountTransactionCommandHandler :
         this.mapper = mapper;
     }
 
+    // AccountTransaction nesnesini üretmek için kullanýlýr
     public async Task<IActionResult> Handle(CreateAccountTransactionCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // Foreign Key kontrolu yapýlýr
             var checkIdentity = await dbContext.Accounts.Where(x => x.AccountNumber == request.Model.AccountNumber)
             .FirstOrDefaultAsync(cancellationToken);
             if (checkIdentity == null)
@@ -42,10 +44,12 @@ public class AccountTransactionCommandHandler :
                 return new ObjectResult(responseNF) { StatusCode = 404 }; // 404 Not Found durumu            }
             }
             var entity = mapper.Map<CreateAccountTransactionRequest, AccountTransaction>(request.Model);
-            
 
+
+            // database iþlemleri yapýlýyor
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<AccountTransaction, AccountTransactionResponse>(entity);
 
             var response = new
@@ -72,11 +76,13 @@ public class AccountTransactionCommandHandler :
         }
     }
 
+    // AccountTransaction nesnesini düzenlemek için kullanýlýr
     public async Task<IActionResult> Handle(UpdateAccountTransactionCommand request, CancellationToken cancellationToken)
     {
 
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.AccountTransactions.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -96,8 +102,10 @@ public class AccountTransactionCommandHandler :
             fromdb.UpdateUserId = request.Model.UpdateUserId;
             fromdb.UpdateDate = DateTime.Now;
 
+            // database iþlemleri yapýlýyor
             dbContext.AccountTransactions.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<AccountTransaction, AccountTransactionResponse>(fromdb);
 
             var response = new
@@ -124,10 +132,12 @@ public class AccountTransactionCommandHandler :
         }
     }
 
+    // AccountTransaction nesnesini silmek için kullanýlýr
     public async Task<IActionResult> Handle(DeleteAccountTransactionCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            // database de nesnenin kontrolu yapýlýr
             var fromdb = await dbContext.AccountTransactions.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -144,8 +154,10 @@ public class AccountTransactionCommandHandler :
 
             fromdb.IsActive = false;
 
+            // database iþlemleri yapýlýyor
             dbContext.AccountTransactions.Update(fromdb);
             await dbContext.SaveChangesAsync(cancellationToken);
+            // response mapper ile oluþturulur
             var mappedItem = mapper.Map<AccountTransaction, AccountTransactionResponse>(fromdb);
 
             var response = new
